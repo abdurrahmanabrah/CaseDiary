@@ -1,0 +1,6 @@
+@CaseDiary_HostAddress = http://localhost:5142
+
+GET {{CaseDiary_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
