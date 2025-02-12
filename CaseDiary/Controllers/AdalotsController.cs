@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace CaseDiary.Controllers
 {
@@ -11,13 +12,17 @@ namespace CaseDiary.Controllers
     public class AdalotsController : ControllerBase
     {
         public readonly CaseDiaryContext _context;
-        private object _hostEnvironment;
+        IWebHostEnvironment _environment;
+        
 
-        public object GetHostEnvironment { get; private set; }
+        ////private object _hostEnvironment;
 
-        public AdalotsController(CaseDiaryContext context)
+        //public object GetHostEnvironment { get; private set; }
+
+        public AdalotsController(CaseDiaryContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
         [HttpGet]
         public IEnumerable<Adalot> Get()
@@ -36,20 +41,70 @@ namespace CaseDiary.Controllers
             return Ok(adalot);
         }
         [HttpPost]
-        public IActionResult Post(Adalot adalot)
+        public IActionResult Post()
         {
-            if (!ModelState.IsValid)
+            var name = HttpContext.Request.Form["AdalotName"];
+            
+            Adalot adalot = new Adalot();
+
+            var r = HttpContext.Request.Form.Files[0];
+            if (r != null)
             {
-                return BadRequest();
+                string ext = Path.GetExtension(r.FileName).ToLower();
+                if (ext == ".jpg" || ext == ".jpeg" || ext == ".png")
+                {
+                    string filrtoFOlder = Path.Combine(_environment.WebRootPath, "Pictures");
+                    //string filrtoFOlder = Path.Combine(hostEnvironment.WebRootPath, "Pictures");
+                    string filetoSave = Path.Combine(filrtoFOlder, name + "logo" + ext);
+                    using (FileStream fs = new FileStream(filetoSave, FileMode.Create))
+                    {
+                        r.CopyTo(fs);
+                    }
+                    adalot.Logo = "Pictures/" + name + "logo" + ext;
+                }
+                var b = HttpContext.Request.Form.Files[1];
+                if (b != null)
+                {
+                    string bext = Path.GetExtension(b.FileName).ToLower();
+                    if (bext == ".jpg" || bext == ".jpeg" || bext == ".png")
+                    {
+                        string filrtoFOlder = Path.Combine(_environment.WebRootPath, "Pictures");
+                        //string filrtoFOlder = Path.Combine(hostEnvironment.WebRootPath, "Pictures");
+                        string filetoSave = Path.Combine(filrtoFOlder, name + "banar" + bext);
+                        using (FileStream fs = new FileStream(filetoSave, FileMode.Create))
+                        {
+                            b.CopyTo(fs);
+                        }
+                        adalot.Banner = "Pictures/" + name + "banner" + bext;
+
+                        try
+                        {
+                            adalot.AdalotName = name;
+                            _context.Adalot.Add(adalot);
+                            if (_context.SaveChanges() > 0)
+                            {
+                                return Created();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            return Problem(ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest("Please provide valid Logo image");
+                    }
+
+
+ 
+                }
+
+
             }
-            _context.Adalot.Add(adalot);
-            _context.SaveChanges();
-            return CreatedAtRoute(new { id = adalot.Id }, adalot);
+            return Problem("Image not found");
         }
-
-
-
-        [HttpPut]
+            [HttpPut]
         public IActionResult Put(int id, Adalot adalot)
         {
             var existingAdalot = _context.Adalot.Find(id);

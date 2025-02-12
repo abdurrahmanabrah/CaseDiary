@@ -1,0 +1,47 @@
+﻿@model CaseDiaryView.ViewModels.Adalot
+
+@{
+    ViewData["Title"] = "Create Adalot";
+}
+
+<h2>Create Adalot</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="AdalotName" class="control-label">Adalot Name</label>
+        <input asp-for="AdalotName" class="form-control" required />
+        <span asp-validation-for="AdalotName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">Adalot Name</label>
+        <input asp-for="Description" class="form-control" required />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Location" class="control-label">Adalot Name</label>
+        <input asp-for="Location" class="form-control" required />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ILogoFile" class="control-label">Upload Logo</label>
+        <input type="file" asp-for="ILogoFile" class="form-control" accept="image/*" required />
+        <span asp-validation-for="ILogoFile" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="IBannerFile" class="control-label">Upload Banner</label>
+        <input type="file" asp-for="IBannerFile" class="form-control" accept="image/*" required />
+        <span asp-validation-for="IBannerFile" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

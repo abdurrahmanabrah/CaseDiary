@@ -1,0 +1,29 @@
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+
+namespace CaseDiaryView.ViewModels
+{
+    public class Adalot
+    {
+        public int Id { get; set; }
+        [StringLength(100, ErrorMessage = "Provide Count name within 50 character")]
+        [Required]
+        [DisplayName("Adalot")]
+        public string AdalotName { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+
+        [ValidateNever]
+        [NotMapped]
+        public IFormFile ILogoFile { get; set; }
+
+        public string? Logo { get; set; }
+
+        [ValidateNever]
+        [NotMapped]
+        public IFormFile IBannerFile { get; set; }
+        public string? Banner { get; set; }
+    }
+}
