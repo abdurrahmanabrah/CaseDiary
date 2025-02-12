@@ -15,9 +15,19 @@ namespace CaseDiaryView.Controllers
             _httpClient = httpClient;
         }
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Adalot> adalot = new List<Adalot>();
+            using (var client = new HttpClient())
+            {
+                var res = await client.GetAsync(_baseApiUrl);
+                if (res.IsSuccessStatusCode)
+                {
+                    adalot = res.Content.ReadAsAsync<List<Adalot>>().Result;
+                    return View(adalot);
+                }
+            }
+            return View(Enumerable.Empty<Adalot>());
         }
         public IActionResult Create()
         {
@@ -27,28 +37,34 @@ namespace CaseDiaryView.Controllers
         public async Task<IActionResult> Create(Adalot entity)
         {
             var content = new MultipartFormDataContent();
+
             content.Add(new StringContent(entity.AdalotName), "AdalotName");
+            content.Add(new StringContent(entity.Description ?? ""), "Description");
+            content.Add(new StringContent(entity.Location ?? ""), "Location");
 
             if (entity.ILogoFile != null)
             {
-                var imageContent = new StreamContent(entity.ILogoFile.OpenReadStream());
-                imageContent.Headers.ContentType = new MediaTypeHeaderValue(entity.ILogoFile.ContentType);
-                content.Add(imageContent, "LOGOFile", entity.ILogoFile.FileName);
+                var logoContent = new StreamContent(entity.ILogoFile.OpenReadStream());
+                logoContent.Headers.ContentType = new MediaTypeHeaderValue(entity.ILogoFile.ContentType);
+                content.Add(logoContent, "LOGOFile", entity.ILogoFile.FileName);
             }
+
             if (entity.IBannerFile != null)
             {
-                var imageContent = new StreamContent(entity.IBannerFile.OpenReadStream());
-                imageContent.Headers.ContentType = new MediaTypeHeaderValue(entity.IBannerFile.ContentType);
-                content.Add(imageContent, "Banner", entity.IBannerFile.FileName);
+                var bannerContent = new StreamContent(entity.IBannerFile.OpenReadStream());
+                bannerContent.Headers.ContentType = new MediaTypeHeaderValue(entity.IBannerFile.ContentType);
+                content.Add(bannerContent, "Banner", entity.IBannerFile.FileName);
             }
+
             var response = await _httpClient.PostAsync(_baseApiUrl, content);
-            //response.EnsureSuccessStatusCode();
-            //var output= await response.Content.ReadFromJsonAsync<Adalot>();
+
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("index");
+                return RedirectToAction("Index");
             }
-            return View();
+
+            ModelState.AddModelError("", "Failed to create Adalot.");
+            return View(entity);
         }
     }
 }

@@ -44,7 +44,8 @@ namespace CaseDiary.Controllers
         public IActionResult Post()
         {
             var name = HttpContext.Request.Form["AdalotName"];
-            
+            var description = HttpContext.Request.Form["Description"];
+            var location = HttpContext.Request.Form["Location"];
             Adalot adalot = new Adalot();
 
             var r = HttpContext.Request.Form.Files[0];
@@ -70,16 +71,18 @@ namespace CaseDiary.Controllers
                     {
                         string filrtoFOlder = Path.Combine(_environment.WebRootPath, "Pictures");
                         //string filrtoFOlder = Path.Combine(hostEnvironment.WebRootPath, "Pictures");
-                        string filetoSave = Path.Combine(filrtoFOlder, name + "banar" + bext);
+                        string filetoSave = Path.Combine(filrtoFOlder, name + "banner" + bext);
                         using (FileStream fs = new FileStream(filetoSave, FileMode.Create))
                         {
-                            b.CopyTo(fs);
+                                    b.CopyTo(fs);
                         }
                         adalot.Banner = "Pictures/" + name + "banner" + bext;
 
                         try
                         {
                             adalot.AdalotName = name;
+                            adalot.Description = description;
+                            adalot.Location = location;
                             _context.Adalot.Add(adalot);
                             if (_context.SaveChanges() > 0)
                             {
