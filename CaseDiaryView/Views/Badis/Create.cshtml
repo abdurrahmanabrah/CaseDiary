@@ -1,0 +1,75 @@
+﻿@model CaseDiaryView.ViewModels.Badi
+
+@{
+    ViewData["Title"] = "Create New Badi";
+}
+
+<h2>Create New Badi</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="BadiName" class="control-label">Badi Name</label>
+        <input asp-for="BadiName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location" class="control-label">Location</label>
+        <input asp-for="Location" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DOB" class="control-label">Date of Birth</label>
+        <input asp-for="DOB" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="phoneNumber" class="control-label">Phone Number</label>
+        <input asp-for="phoneNumber" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EmailAddress" class="control-label">Email</label>
+        <input asp-for="EmailAddress" type="email" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Nationality" class="control-label">Nationality</label>
+        <input asp-for="Nationality" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CrimeDate" class="control-label">Crime Date</label>
+        <input asp-for="CrimeDate" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConvictionDate" class="control-label">Conviction Date</label>
+        <input asp-for="ConvictionDate" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label">Description</label>
+        <textarea asp-for="Description" class="form-control" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" class="control-label">Status</label>
+        <select asp-for="Status" class="form-control">
+            <option value="Pending">Pending</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageFile" class="control-label">Upload Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
