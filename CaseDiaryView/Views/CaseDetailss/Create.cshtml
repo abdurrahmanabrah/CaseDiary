@@ -1,0 +1,32 @@
+﻿@model CaseDiaryView.ViewModels.CaseDetails
+
+@{
+    ViewData["Title"] = "Add CaseDetails";
+}
+
+<h2>Add CaseDetails</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="CurrentHearingDate"></label>
+        <input asp-for="CurrentHearingDate" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NextHearingDate"></label>
+        <input asp-for="NextHearingDate" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Hiring"></label>
+        <input asp-for="Hiring" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Comment"></label>
+        <textarea asp-for="Comment" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

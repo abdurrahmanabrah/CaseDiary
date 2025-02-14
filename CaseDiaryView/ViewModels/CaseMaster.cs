@@ -15,10 +15,12 @@ namespace CaseDiaryView.ViewModels
 
         [Required, ForeignKey(nameof(Section))]
         public int SectionId { get; set; } = default!;
+
         public Section Section { get; set; } = default!;
 
         [ForeignKey("Badi")]
         public int BadiId { get; set; }
+
         public Badi Badi { get; set; }
 
         [ForeignKey("Complainant")]
@@ -28,9 +30,11 @@ namespace CaseDiaryView.ViewModels
         [Required, DataType(DataType.Date)]
         [Display(Name = "Case Date")]
         public DateTime CaseDate { get; set; }
+
         [Required, ForeignKey(nameof(CaseSource))]
         [DisplayName("Case Source")]
         public int CaseSourceId { get; set; }
+
         public CaseSource CaseSource { get; set; }
         [Required, StringLength(1000)]
         public string Details { get; set; } = default!;
@@ -40,7 +44,6 @@ namespace CaseDiaryView.ViewModels
         [DisplayName("Court")]
         public int CourtId { get; set; }
         public Court Court { get; set; } = default!;
-
         [DisplayName("Adalot")]
         [ForeignKey(nameof(Adalot))]
         public int AdalotId { get; set; }

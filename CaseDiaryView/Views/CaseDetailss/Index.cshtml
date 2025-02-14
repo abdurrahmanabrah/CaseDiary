@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CaseDiaryView.ViewModels.CaseDetails>
+
+@{
+    ViewData["Title"] = "CaseDetails";
+}
+
+<h2>Case Sources</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+@if (Model.Any())
+{
+    <h2>Case Information</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                @* <td>Case Number</td> *@
+                <td>
+                    @Html.DisplayNameFor(m => m.Id)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(m => m.CurrentHearingDate)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(m => m.NextHearingDate)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(m => m.Hiring)
+                </td>
+                <td>
+                @Html.DisplayNameFor(m => m.Comment)
+            </td>
+                <td>.....</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+                        @item.CurrentHearingDate
+                    </td>
+                    <td>
+                        @item.NextHearingDate
+                    </td>
+                    <td>
+                        @item.Hiring
+                    </td>
+                    <td>
+                        @item.Comment
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "CaseINfo", new { @item.Id}, null)|
+                        @Html.ActionLink("ADD|Edit Details", "AddEdit", "Casedetails", new { @item.Id }, null)|
+                        @Html.ActionLink("Delete", "Deleet", "CaseINfo", new { @item.Id }, null)
+                    </td>
+                </tr>
+                
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No case sources found.</p>
+}
