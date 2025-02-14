@@ -1,0 +1,72 @@
+﻿@model CaseDiaryView.ViewModels.Complainant
+
+@{
+    ViewData["Title"] = "Edit Complainant";
+}
+
+<h2>Edit Complainant</h2>
+
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" asp-controller="Complainants">
+    <div class="form-group">
+        <label asp-for="ComplainantName" class="control-label"></label>
+        <input asp-for="ComplainantName" class="form-control" />
+        <span asp-validation-for="ComplainantName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location" class="control-label"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DOB" class="control-label"></label>
+        <input asp-for="DOB" type="date" class="form-control" />
+        <span asp-validation-for="DOB" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="phoneNumber" class="control-label"></label>
+        <input asp-for="phoneNumber" class="form-control" />
+        <span asp-validation-for="phoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EmailAddress" class="control-label"></label>
+        <input asp-for="EmailAddress" type="email" class="form-control" />
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="Nationality" class="control-label"></label>
+        <input asp-for="Nationality" class="form-control" />
+        <span asp-validation-for="Nationality" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="ImageFile" class="control-label"></label>
+        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Current Photo</label>
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div>
+                <img src="@Url.Content("https://localhost:7175/"+Model.ImageUrl)" alt="Current Photo" style="max-width: 150px; height: auto;" />
+            </div>
+        }
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

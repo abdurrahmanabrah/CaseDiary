@@ -21,6 +21,11 @@ namespace CaseDiary.Controllers
             return await _context.CAseMaster
                 .Include(d => d.Adalot)
                 .Include(d => d.Section)
+                .Include(d=>d.Badi)
+                .Include(d=>d.Complainant)
+                .Include(d => d.CaseSource)
+                .Include(d => d.Court)
+                .Include(d=>d.CaseDetails)
                 .ToListAsync();
         }
 
@@ -31,6 +36,11 @@ namespace CaseDiary.Controllers
             var caseMaster = await _context.CAseMaster
                 .Include(d => d.Adalot)
                 .Include(d => d.Section)
+                .Include(d => d.Badi)
+                .Include(d => d.Complainant)
+                .Include(d => d.CaseSource)
+                .Include(d => d.Court)
+                .Include(d => d.CaseDetails)
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (caseMaster == null)

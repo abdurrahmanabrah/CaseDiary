@@ -14,3 +14,4 @@ namespace CaseDiaryView.ViewModels
         public ICollection<CaseMaster> Cases { get; set; } = new List<CaseMaster>();
     }
 }
+

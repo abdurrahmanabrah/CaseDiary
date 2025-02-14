@@ -20,22 +20,17 @@ namespace CaseDiaryView.Controllers
         public async Task<IActionResult> Index()
         {
             List<CaseMaster> caseMasters = new List<CaseMaster>();
-            using (var httpClient = _httpClient)
+            var response = await _httpClient.GetAsync("https://localhost:7175/api/CaseMasters");
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.GetAsync("https://localhost:7175/api/CaseMasters");
-                if (!response.IsSuccessStatusCode)
-                {
-                    caseMasters = await response.Content.ReadAsAsync<List<CaseMaster>>();
-                    return View(new List<CaseMaster>());
-                }
-
+                ViewBag.ErrorMessage = "Failed to retrieve cases from the API.";
+                return View(new List<CaseMaster>());
             }
 
-
-            //caseMaster = await response.Content.ReadAsAsync<List<CaseMaster>>();
-            //var cases = JsonConvert.DeserializeObject<List<CaseMaster>>().Result;
-            return View(Enumerable.Empty<CaseMaster>());
+            caseMasters = await response.Content.ReadAsAsync<List<CaseMaster>>();
+            return View(caseMasters);
         }
+       
 
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -45,7 +40,7 @@ namespace CaseDiaryView.Controllers
             ViewBag.CaseSourceId = new SelectList(await GetCaseSource(), "Id", "Name");
             ViewBag.CourtId = new SelectList(await GetCourt(), "Id", "CourtName");
             ViewBag.AdalotId = new SelectList(await GetAdalot(), "Id", "AdalotName");
-
+            
             return View();
         }
         public async Task<List<Badi>> GetBadi()

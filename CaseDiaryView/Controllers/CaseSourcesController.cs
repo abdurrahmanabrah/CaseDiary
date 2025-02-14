@@ -29,6 +29,7 @@ namespace CaseDiaryView.Controllers
             }
             return View(Enumerable.Empty<CaseSource>());
         }
+
         [HttpGet]
         public IActionResult Create()
         {

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<CaseDiaryView.ViewModels.Court>
+
+@{
+    ViewData["Title"] = "Court";
+}
+
+<h2>Court</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>CaseMaster</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CourtId</td>
+                    <td>@item.CourtName</td>
+                    <td>@item.Cases</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.CourtId" class="btn btn-warning btn-sm">Edit</a>
+                        @* <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info btn-sm">Details</a> *@
+                        <a asp-action="Delete" asp-route-id="@item.CourtId" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No case sources found.</p>
+}

@@ -1,74 +1,58 @@
-﻿
-@model CaseDiaryView.ViewModels.CaseMaster
-
+﻿@model CaseDiaryView.ViewModels.CaseMaster
 @{
-    ViewData["Title"] = "Create CaseMaster";
+    ViewBag.Title = "Create Case Information";
 }
 
-<h2>Create New Case</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Create Case Information</h2>
 
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
+    @using (Html.BeginForm("Edit", "CaseMasters", FormMethod.Post, new { @class = "row g-3" }))
+    {
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.AdalotId, new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(m => m.AdalotId, (IEnumerable<SelectListItem>)ViewBag.AdalotId, "Select Court", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.AdalotId, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label>Case Number</label>
-        <input asp-for="CaseNumber" class="form-control" required />
-    </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SectionId, new { @class = "form-label fw-bold" })
+                @Html.DropDownListFor(m => m.SectionId, (IEnumerable<SelectListItem>)ViewBag.SectionId, "Select Section", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SectionId, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label>Case Date</label>
-        <input asp-for="CaseDate" type="date" class="form-control" required />
-    </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.CaseNumber, new { @class = "form-label fw-bold" })
+                @Html.EditorFor(m => m.CaseNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.CaseNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label>Badi</label>
-        <select asp-for="BadiId" asp-items="ViewBag.BadiId" class="form-control" required>
-            <option value="0">-- Select Badi --</option>
-        </select>
-    </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.CaseDate, new { @class = "form-label fw-bold" })
+                @Html.EditorFor(m => m.CaseDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                @Html.ValidationMessageFor(m => m.CaseDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label>Complainant</label>
-        <select asp-for="ComplainantId" asp-items="ViewBag.ComplainantId" class="form-control" required>
-            <option value="0">-- Select Complainant --</option>
-        </select>
-    </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description, new { @class = "form-label fw-bold" })
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 3 })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label>Case Source</label>
-        <select asp-for="CaseSourceId" asp-items="ViewBag.CaseSourceId" class="form-control" required>
-            <option value="0">-- Select Case Source --</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Court</label>
-        <select asp-for="CourtId" asp-items="ViewBag.CourtId" class="form-control" required>
-            <option value="0">-- Select Court --</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Adalot</label>
-        <select asp-for="AdalotId" asp-items="ViewBag.AdalotId" class="form-control">
-            <option value="0">-- Select Adalot --</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Details</label>
-        <textarea asp-for="Details" class="form-control" rows="3" required></textarea>
-    </div>
-
-    <div class="form-group">
-        <label>Status</label>
-        <select asp-for="Status" class="form-control">
-            <option value="true">Active</option>
-            <option value="false">Closed</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-success mt-3">Submit</button>
-    <a asp-action="Index" class="btn btn-secondary mt-3">Back to List</a>
-</form>
- 
+        <div class="col-md-12 d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-primary px-4">Save</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary px-4">Cancel</a>
+        </div>
+    }
+</div>

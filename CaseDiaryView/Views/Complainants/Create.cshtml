@@ -1,0 +1,52 @@
+﻿@model CaseDiaryView.ViewModels.Complainant
+
+@{
+    ViewData["Title"] = "Create New Complainant";
+}
+
+<h2>Create New Complainant</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="ComplainantName" class="control-label">Complainant Name</label>
+        <input asp-for="ComplainantName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location" class="control-label">Location</label>
+        <input asp-for="Location" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DOB" class="control-label">Date of Birth</label>
+        <input asp-for="DOB" type="date" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="phoneNumber" class="control-label">Phone Number</label>
+        <input asp-for="phoneNumber" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EmailAddress" class="control-label">Email</label>
+        <input asp-for="EmailAddress" type="email" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Nationality" class="control-label">Nationality</label>
+        <input asp-for="Nationality" class="form-control" required />
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="ImageFile" class="control-label">Upload Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>

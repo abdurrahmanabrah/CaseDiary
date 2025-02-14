@@ -1,103 +1,89 @@
 ﻿@model IEnumerable<CaseDiaryView.ViewModels.CaseMaster>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Case Information";
 }
-@Html.ActionLink("Add", "Create", "CaseMasters")
-<h2>Case Information</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <td>Case Number</td>
-            <td>
-                @Html.DisplayNameFor(m => m.Adalot)
-            </td>
-            <td>
-                @Html.DisplayNameFor(m => m.Description)
-            </td>
-            <td>
-                @Html.DisplayNameFor(m => m.CaseDate)
-            </td>
-            <td>
-                @Html.DisplayNameFor(m => m.Section)
-            </td>
-            @*<td>
-                @Html.DisplayNameFor(m => m.Description)
-            </td>*@
-            <td>.....</td>
-        </tr>
-    </thead>
-    <tbody>
 
-        @foreach (var item in Model)
-        {
+<div class="container mt-4">
+    <h2 class="mb-3">Case Information</h2>
+
+    <div class="mb-3">
+        @Html.ActionLink("➕ Add New Case", "Create", "CaseMasters", null, new { @class = "btn btn-primary" })
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
             <tr>
-                <td>@item.CaseNumber</td>
-                <td>
-                    @item.Adalot.AdalotName
-                </td>
-                <td>
-                  @item.Description
-                </td>
-                <td>
-                    @item.CaseDate
-                </td>
-                <td>
-                   @item.Section.SectionName
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "CaseINfo", new { @item.Id },null)|
-                    @* @Html.ActionLink("ADD|Edit Details", "AddEdit", "Casedetails", new { @item.Id },null)| *@
-                    @Html.ActionLink("Delete", "Deleet", "CaseINfo", new { @item.Id },null)
-                </td>
+                <th>Case Number</th>
+                <th>@Html.DisplayNameFor(m => m.Adalot)</th>
+                <th>@Html.DisplayNameFor(m => m.Description)</th>
+                <th>@Html.DisplayNameFor(m => m.CaseDate)</th>
+                <th>@Html.DisplayNameFor(m => m.Section)</th>
+                <th>Actions</th>
             </tr>
-            <tr>
-                <td></td>
-                <td colspan="5">
-                    <h2>@item.CaseNumber  case's details information</h2>
-                    <table class="table table-danger">
-                        <tr>
-                            <th>Heiring Date</th>
-                            <th>Next Heiring Date</th>
-                            <th>Heiring </th>
-                            <th>Comments</th>
-                        </tr>
-                        @if (item.CaseDetails.Count > 0)
-                        {
-                            foreach (var dt in item.CaseDetails)
-                            {
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CaseNumber</td>
+                    <td>@item.Adalot.AdalotName</td>
+                    <td>@item.Description</td>
+                    <td>@item.CaseDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Section.SectionName</td>
+                    <td>
+                        @Html.ActionLink("✏️ Edit", "Edit", "CaseMasters", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" }) |
+                        @Html.ActionLink("➕ Details", "AddEdit", "CaseMasters", new { id = item.Id }, new { @class = "btn btn-sm btn-info" }) |
+                        @Html.ActionLink("🗑️ Delete", "Delete", "CaseMasters", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
+                    </td>
+                </tr>
+
+                <!-- Case Details Table -->
+                <tr>
+                    <td colspan="6">
+                        <h5 class="mt-3">@item.CaseNumber - Case Details</h5>
+                        <table class="table table-bordered table-danger">
+                            <thead>
                                 <tr>
-                                    <td>@dt.CurrentHearingDate</td>
-                                    <td>@dt.NextHearingDate</td>
-                                    <td>@dt.Hiring </td>
-                                    <td>@dt.Comment</td>
-                                    <td>
-
-                                        @Html.ActionLink("Edit", "Edit", "Casedetails", new { @item.Id }, null)|
-
-                                        @Html.ActionLink("Delete", "Delete", "Casedetails", new { @item.Id }, null)
-
-                                    </td>
+                                    <th>Hearing Date</th>
+                                    <th>Next Hearing Date</th>
+                                    <th>Hearing</th>
+                                    <th>Comments</th>
+                                    <th>Actions</th>
                                 </tr>
-                            }
-
-                    }
-else
-                {
-                    <tr>
-                        <td colspan="3">
-                            <p class="text-bg-info text-center">  No details information</p>
-                            
-                        </td>
-                        <td>
-                           
-                            @Html.ActionLink("Add", "Create", "Casedetails", new { caseId= @item.Id }, null)
-                        </td>
-                    </tr>
-                }
-
-                    </table>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                            </thead>
+                            <tbody>
+                                @if (item.CaseDetails.Any())
+                                {
+                                    foreach (var dt in item.CaseDetails)
+                                    {
+                                        <tr>
+                                            <td>@dt.CurrentHearingDate.ToString("yyyy-MM-dd")</td>
+                                            <td>@dt.NextHearingDate.ToString("yyyy-MM-dd")</td>
+                                            <td>@dt.Hiring</td>
+                                            <td>@dt.Comment</td>
+                                            <td>
+                                                @Html.ActionLink("✏️ Edit", "Edit", "Casedetails", new { id = dt.Id }, new { @class = "btn btn-sm btn-warning" }) |
+                                                @Html.ActionLink("🗑️ Delete", "Delete", "Casedetails", new { id = dt.Id }, new { @class = "btn btn-sm btn-danger" })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center">
+                                            <div class="alert alert-info m-0">No details available</div>
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("➕ Add", "Create", "Casedetails", new { caseId = item.Id }, new { @class = "btn btn-sm btn-success" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
