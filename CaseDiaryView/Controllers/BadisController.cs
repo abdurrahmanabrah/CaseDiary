@@ -40,9 +40,9 @@ namespace CaseDiaryView.Controllers
         {
             var content = new MultipartFormDataContent();
 
-            content.Add(new StringContent(entity.BadiName), "AdalotName");
+            content.Add(new StringContent(entity.BadiName), "BadiName");
             content.Add(new StringContent(entity.Location ), "Location");
-            content.Add(new StringContent(entity.DOB.ToString("yyyy-MM-dd")), "Location");
+            content.Add(new StringContent(entity.DOB.ToString("yyyy-MM-dd")), "DOB");
             content.Add(new StringContent(entity.phoneNumber), "phoneNumber");
             content.Add(new StringContent(entity.EmailAddress), "EmailAddress");
             content.Add(new StringContent(entity.Nationality), "Nationality");
@@ -58,7 +58,7 @@ namespace CaseDiaryView.Controllers
             {
                 var logoContent = new StreamContent(entity.ImageFile.OpenReadStream());
                 logoContent.Headers.ContentType = new MediaTypeHeaderValue(entity.ImageFile.ContentType);
-                content.Add(logoContent, "LOGOFile", entity.ImageFile.FileName);
+                content.Add(logoContent, "ImageFile", entity.ImageFile.FileName);
             }
 
             
@@ -69,8 +69,69 @@ namespace CaseDiaryView.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("", "Failed to create Adalot.");
+            ModelState.AddModelError("", "Failed to create BAdi.");
             return View(entity);
         }
+
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var res = await _httpClient.GetAsync($"{_baseApiUrl}/{id}");
+
+            if (!res.IsSuccessStatusCode) return NotFound();
+
+            var content = await res.Content.ReadAsStringAsync();
+
+            try
+            {
+                var badi = JsonSerializer.Deserialize<Badi>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return View(badi);
+            }
+            catch (JsonException)
+            {
+                return BadRequest("Invalid JSON response from API.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Badi entity)
+        {
+            var content = new MultipartFormDataContent
+    {
+        { new StringContent(entity.BadiName ?? ""), "BadiName" },
+        { new StringContent(entity.Location ?? ""), "Location" },
+        { new StringContent(entity.DOB.ToString("yyyy-MM-dd")), "DOB" },
+        { new StringContent(entity.phoneNumber ?? ""), "phoneNumber" },
+        { new StringContent(entity.EmailAddress ?? ""), "EmailAddress" },
+        { new StringContent(entity.CrimeDate.ToString("yyyy-MM-dd")), "CrimeDate" },
+        { new StringContent(entity.Nationality ?? ""), "Nationality" },
+        { new StringContent(entity.ConvictionDate.ToString("yyyy-MM-dd")), "ConvictionDate" },
+        { new StringContent(entity.Description ?? ""), "Description" },
+        { new StringContent(entity.Status ?? ""), "Status" }
+    };
+
+            // Image File Handling (Fixed)
+            if (entity.ImageFile != null && entity.ImageFile.Length > 0)
+            {
+                var stream = new MemoryStream();
+                await entity.ImageFile.CopyToAsync(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var imageContent = new StreamContent(stream);
+                imageContent.Headers.ContentType = new MediaTypeHeaderValue(entity.ImageFile.ContentType);
+                content.Add(imageContent, "PhotoFile", entity.ImageFile.FileName);
+            }
+
+            var response = await _httpClient.PutAsync($"{_baseApiUrl}/{id}", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", "Failed to update Badi.");
+            return View(entity);
+        }
+
     }
 }

@@ -22,6 +22,7 @@ namespace CaseDiary.Controllers
             return _context.Court.ToList();
         }
 
+
         [HttpGet("{id}")]
         public ActionResult<Court> Get(int id)
         {

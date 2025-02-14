@@ -106,11 +106,10 @@ namespace CaseDiary.Controllers
             }
             return Problem("Image not found");
         }
-      
 
-        // PUT: api/badis/{id}
+
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Badi badi)
+        public IActionResult Put(int id)
         {
             var existingBadi = _context.Badi.Find(id);
             if (existingBadi == null)
@@ -118,8 +117,51 @@ namespace CaseDiary.Controllers
                 return NotFound();
             }
 
-            existingBadi.BadiName = badi.BadiName;
-            existingBadi.phoneNumber = badi.phoneNumber;
+            var name = HttpContext.Request.Form["BadiName"];
+            var location = HttpContext.Request.Form["Location"];
+            var dob = HttpContext.Request.Form["DOB"];
+            var number = HttpContext.Request.Form["phoneNumber"];
+            var email = HttpContext.Request.Form["EmailAddress"];
+            var nationality = HttpContext.Request.Form["Nationality"];
+            var description = HttpContext.Request.Form["Description"];
+            var crimeDate = HttpContext.Request.Form["CrimeDate"];
+            var convictionDate = HttpContext.Request.Form["ConvictionDate"];
+            var status = HttpContext.Request.Form["Status"];
+
+            existingBadi.BadiName = name;
+            existingBadi.Location = location;
+            existingBadi.DOB = Convert.ToDateTime(dob);
+            existingBadi.phoneNumber = number;
+            existingBadi.EmailAddress = email;
+            existingBadi.Nationality = nationality;
+            existingBadi.Description = description;
+            existingBadi.CrimeDate = Convert.ToDateTime(crimeDate);
+            existingBadi.ConvictionDate = Convert.ToDateTime(convictionDate);
+            existingBadi.Status = status;
+
+            // Update Image if a new file is uploaded
+            if (HttpContext.Request.Form.Files.Count > 0)
+            {
+                var imageFile = HttpContext.Request.Form.Files.FirstOrDefault();
+                if (imageFile != null)
+                {
+                    string ext = Path.GetExtension(imageFile.FileName).ToLower();
+                    if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" )
+                    {
+                        string filePath = Path.Combine(_environment.WebRootPath, "Pictures", name + ext);
+                        using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                        {
+                            imageFile.CopyTo(fs);
+                        }
+                        existingBadi.ImageUrl = "Pictures/" + name +  ext;
+                    }
+                    else
+                    {
+                        return BadRequest("Invalid logo file format.");
+                    }
+                }
+
+            }
 
             _context.SaveChanges();
             return Ok(existingBadi);

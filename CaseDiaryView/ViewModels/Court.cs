@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CaseDiary.Model
+namespace CaseDiaryView.ViewModels
 {
     public class Court
     {
@@ -11,4 +11,3 @@ namespace CaseDiary.Model
         public ICollection<CaseMaster> Cases { get; set; } = new List<CaseMaster>();
     }
 }
-
