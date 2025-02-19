@@ -18,7 +18,7 @@ namespace CaseDiary.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CaseMaster>>> GetCaseMaster()
         {
-            return await _context.CAseMaster
+            return await _context.CaseMaster
                 .Include(d => d.Adalot)
                 .Include(d => d.Section)
                 .Include(d=>d.Badi)
@@ -33,7 +33,7 @@ namespace CaseDiary.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CaseMaster>> GetCaseMaster(int id)
         {
-            var caseMaster = await _context.CAseMaster
+            var caseMaster = await _context.CaseMaster
                 .Include(d => d.Adalot)
                 .Include(d => d.Section)
                 .Include(d => d.Badi)
@@ -53,7 +53,7 @@ namespace CaseDiary.Controllers
 
         // PUT: api/CaseMasters/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDoctor(int id, CaseMaster caseMaster)
+        public async Task<IActionResult> UpdateCaseMaster(int id, CaseMaster caseMaster)
         {
             if (id != caseMaster.Id)
             {
@@ -83,9 +83,9 @@ namespace CaseDiary.Controllers
 
         // POST: api/CaseMasters
         [HttpPost]
-        public async Task<ActionResult<CaseMaster>> CreateDoctor(CaseMaster caseMaster)
+        public async Task<ActionResult<CaseMaster>> CreateCaseMaster(CaseMaster caseMaster)
         {
-            _context.CAseMaster.Add(caseMaster);
+            _context.CaseMaster.Add(caseMaster);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCaseMaster", new { id = caseMaster.Id }, caseMaster);
@@ -95,13 +95,13 @@ namespace CaseDiary.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCaseMaster(int id)
         {
-            var caseMaster = await _context.CAseMaster.FindAsync(id);
+            var caseMaster = await _context.CaseMaster.FindAsync(id);
             if (caseMaster == null)
             {
                 return NotFound();
             }
 
-            _context.CAseMaster.Remove(caseMaster);
+            _context.CaseMaster.Remove(caseMaster);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -109,7 +109,7 @@ namespace CaseDiary.Controllers
 
         private bool DoctorExists(int id)
         {
-            return _context.CAseMaster.Any(e => e.Id == id);
+            return _context.CaseMaster.Any(e => e.Id == id);
         }
     }
 }

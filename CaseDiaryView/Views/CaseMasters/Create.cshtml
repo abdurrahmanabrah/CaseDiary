@@ -1,58 +1,100 @@
-﻿@model CaseDiaryView.ViewModels.CaseMaster
+﻿ @model CaseDiaryView.ViewModels.CaseMaster
+@* 
 @{
-    ViewBag.Title = "Create Case Information";
+    ViewData["Title"] = "Create";
 }
+ *@
+<div class="container mt-5">
+    <h2 class="mb-4">Create CaseMaster</h2>
+    <form asp-action="Create" method="post" enctype="multipart/form-data" asp-controller="CaseMasters" class="needs-validation" novalidate>
+        <div class="row">
+            <!-- CaseNumber -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="CaseNumber" class="form-label"></label>
+                <input asp-for="CaseNumber" class="form-control" />
+                <span asp-validation-for="CaseNumber" class="text-danger"></span>
+            </div>
 
-<div class="container mt-4">
-    <h2 class="mb-4">Create Case Information</h2>
-
-    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
-
-    @using (Html.BeginForm("Edit", "CaseMasters", FormMethod.Post, new { @class = "row g-3" }))
-    {
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.AdalotId, new { @class = "form-label fw-bold" })
-                @Html.DropDownListFor(m => m.AdalotId, (IEnumerable<SelectListItem>)ViewBag.AdalotId, "Select Court", new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.AdalotId, "", new { @class = "text-danger" })
+            <!-- Adalot -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="AdalotId" class="form-label">Adalot</label>
+                <select asp-for="AdalotId" asp-items="@ViewBag.AdalotId" class="form-select">
+                    <option value="0">Select Adalot</option>
+                </select>
+                <span asp-validation-for="AdalotId" class="text-danger"></span>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.SectionId, new { @class = "form-label fw-bold" })
-                @Html.DropDownListFor(m => m.SectionId, (IEnumerable<SelectListItem>)ViewBag.SectionId, "Select Section", new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.SectionId, "", new { @class = "text-danger" })
+        <div class="row">
+            <!-- Badi -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="BadiId" class="form-label">Badi </label>
+                <select asp-for="BadiId" asp-items="@ViewBag.BadiId" class="form-select">
+                    <option value="0">Select BAdi</option>
+                </select>
+                <span asp-validation-for="BadiId" class="text-danger"></span>
+            </div>
+
+            <!-- Section -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="SectionId " class="form-label">Section</label>
+                <select asp-for="SectionId " asp-items="@ViewBag.SectionId " class="form-select">
+                    <option value="0">Select Section</option>
+                </select>
+                <span asp-validation-for="SectionId " class="text-danger"></span>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.CaseNumber, new { @class = "form-label fw-bold" })
-                @Html.EditorFor(m => m.CaseNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.CaseNumber, "", new { @class = "text-danger" })
+        <div class="row">
+            <!-- Description -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+
+            <!-- ComplainantId -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="ComplainantId" class="form-label">Special Complainant</label>
+                <select asp-for="ComplainantId" asp-items="@ViewBag.ComplainantId" class="form-select">
+                    <option value="0">Select Complainant</option>
+                </select>
+                <span asp-validation-for="ComplainantId" class="text-danger"></span>
+            </div>
+
+            <!-- CaseDate -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="CaseDate" class="form-label">CaseDate</label>
+                <select asp-for="CaseDate" asp-items="@ViewBag.CaseDate" class="form-select">
+                    <option value="0">Select CaseDate</option>
+                </select>
+                <span asp-validation-for="CaseDate" class="text-danger"></span>
+            </div>
+            <!-- CaseSource -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="CaseSourceId" class="form-label">CaseSource</label>
+                <select asp-for="CaseSourceId" asp-items="@ViewBag.CaseSourceId" class="form-select">
+                    <option value="0">Select CaseSourceId</option>
+                </select>
+                <span asp-validation-for="CaseSourceId" class="text-danger"></span>
+            </div>
+            <!-- CourtId -->
+            <div class="col-md-6 mb-3">
+                <label asp-for="CourtId" class="form-label">CourtId</label>
+                <select asp-for="CourtId" asp-items="@ViewBag.CourtId" class="form-select">
+                    <option value="0">Select Court</option>
+                </select>
+                <span asp-validation-for="CourtId" class="text-danger"></span>
+            </div>
+            
         </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(m => m.CaseDate, new { @class = "form-label fw-bold" })
-                @Html.EditorFor(m => m.CaseDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
-                @Html.ValidationMessageFor(m => m.CaseDate, "", new { @class = "text-danger" })
-            </div>
+        <div class="d-flex justify-content-end">
+            <!-- Buttons -->
+            <button type="submit" class="btn btn-primary me-2">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
         </div>
-
-        <div class="col-md-12">
-            <div class="form-group">
-                @Html.LabelFor(m => m.Description, new { @class = "form-label fw-bold" })
-                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 3 })
-                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="col-md-12 d-flex justify-content-between mt-3">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <a href="@Url.Action("Index")" class="btn btn-secondary px-4">Cancel</a>
-        </div>
-    }
+    </form>
 </div>
+ 
+                <p>Welcome</p>

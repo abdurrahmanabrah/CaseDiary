@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CaseDiary.Model
@@ -18,6 +19,7 @@ namespace CaseDiary.Model
         public string Comment { get; set; }
         [ForeignKey("CaseMaster")]
         public int CaseId { get; set; }
+        [ValidateNever]
         public CaseMaster CaseMaster { get; set; }
     }
 }

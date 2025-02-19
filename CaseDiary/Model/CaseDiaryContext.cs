@@ -14,7 +14,7 @@ namespace CaseDiary.Model
         }
         public DbSet<Adalot> Adalot { get; set; }
         public DbSet<CaseDetails> CaseDetails { get; set; }
-        public DbSet<CaseMaster> CAseMaster { get; set; }
+        public DbSet<CaseMaster> CaseMaster { get; set; }
         public DbSet<CaseSource> CaseSource { get; set; }
         public DbSet<Section> Section { get; set; }
         public DbSet<Complainant> Complainant { get; set; }

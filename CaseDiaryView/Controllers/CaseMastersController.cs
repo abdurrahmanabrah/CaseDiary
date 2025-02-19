@@ -35,13 +35,14 @@ namespace CaseDiaryView.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            //List<CaseMaster> casemaster = new List<CaseMaster>();
             ViewBag.BadiId = new SelectList(await GetBadi(), "Id", "BadiName");
             ViewBag.ComplainantId = new SelectList(await GetComplainant(), "Id", "ComplainantName");
             ViewBag.CaseSourceId = new SelectList(await GetCaseSource(), "Id", "Name");
             ViewBag.CourtId = new SelectList(await GetCourt(), "Id", "CourtName");
             ViewBag.AdalotId = new SelectList(await GetAdalot(), "Id", "AdalotName");
             
-            return View();
+            return View(new CaseMaster());
         }
         public async Task<List<Badi>> GetBadi()
         {
@@ -133,7 +134,7 @@ namespace CaseDiaryView.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    var response = await client.PostAsJsonAsync("https://localhost:7050/api/CaseMasters", caseMaster);
+                    var response = await client.PostAsJsonAsync("https://localhost:7175/api/CaseMasters", caseMaster);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));

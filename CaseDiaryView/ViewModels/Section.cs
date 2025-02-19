@@ -11,7 +11,7 @@ namespace CaseDiaryView.ViewModels
         [Required, StringLength(10)]
         public string SectionNumber { get; set; } = default!;
         public string Description { get; set; }
-        public ICollection<CaseMaster> Cases { get; set; } = new List<CaseMaster>();
+        //public ICollection<CaseMaster> Cases { get; set; } = new List<CaseMaster>();
     }
 }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseDiary.Migrations
 {
     [DbContext(typeof(CaseDiaryContext))]
-    [Migration("20250214085815_vggt")]
-    partial class vggt
+    [Migration("20250216170743_njhhc")]
+    partial class njhhc
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,7 +205,7 @@ namespace CaseDiary.Migrations
 
                     b.HasIndex("SectionId");
 
-                    b.ToTable("CAseMaster");
+                    b.ToTable("CaseMaster");
                 });
 
             modelBuilder.Entity("CaseDiary.Model.CaseSource", b =>

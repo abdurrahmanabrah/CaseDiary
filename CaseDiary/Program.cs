@@ -1,7 +1,18 @@
 using CaseDiary.Model;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Inside ConfigureServices method
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+
+
+
+
 
 // Add services to the container.
 
@@ -10,6 +21,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 
 ///// Register DbContext with SQL Server connection string
 builder.Services.AddDbContext<CaseDiaryContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -30,3 +46,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+// Inside ConfigureServices method
+
+builder.Services.AddCors();
+
+// Inside Configure method, before app.UseAuthorization()
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+});

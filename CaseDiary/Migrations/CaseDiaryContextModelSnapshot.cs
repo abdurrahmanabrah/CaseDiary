@@ -202,7 +202,7 @@ namespace CaseDiary.Migrations
 
                     b.HasIndex("SectionId");
 
-                    b.ToTable("CAseMaster");
+                    b.ToTable("CaseMaster");
                 });
 
             modelBuilder.Entity("CaseDiary.Model.CaseSource", b =>
