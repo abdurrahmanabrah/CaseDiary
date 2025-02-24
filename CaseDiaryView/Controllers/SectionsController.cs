@@ -25,11 +25,11 @@ namespace CaseDiaryView.Controllers
         }
 
 
-        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Section section)
@@ -41,23 +41,37 @@ namespace CaseDiaryView.Controllers
 
             try
             {
-                var response = await _httpClient.PostAsJsonAsync(_BaseapiUrl, section);
+                using (var client = new HttpClient())
+                {
+                    var response = await client.PostAsJsonAsync("https://localhost:7175/api/Sections", section);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        // Handle API error
+                        ViewBag.ErrorMessage = "Failed to create a new degree.";
+                    }
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction(nameof(Index));
                 }
-                else
-                {
-                    ViewBag.ErrorMessage = "Failed to create a new Court.";
-                }
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    return RedirectToAction(nameof(Index));
+                //}
+
             }
             catch (Exception ex)
             {
+                // Log the exception
                 ViewBag.ErrorMessage = $"An error occurred: {ex.Message}";
             }
 
             return View(section);
         }
+
+
+
+
     }
 }

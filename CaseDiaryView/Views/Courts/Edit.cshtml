@@ -1,0 +1,33 @@
+﻿@model CaseDiaryView.ViewModels.Court
+
+@{
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+    ViewData["Title"] = "Edit Court";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Edit Court</h2>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage as string))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <form asp-action="Edit" method="post" class="needs-validation" asp-controller="Courts">
+        <input asp-for="CourtId" type="hidden" />
+        <div class="form-group">
+            <label asp-for="CourtName" class="form-label"></label>
+            <input asp-for="CourtName" class="form-control" />
+            <span asp-validation-for="CourtName" class="text-danger"></span>
+        </div>
+        @* <div class="form-group">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div> *@
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

@@ -41,19 +41,34 @@ namespace CaseDiary.Controllers
             return CreatedAtRoute(new { id = caseSource.ID }, caseSource);
         }
 
+        //[HttpPut]
+        //public IActionResult Put(int id, CaseSource caseSource)
+        //{
+        //    var existingCaseSource = _context.CaseSource.Find(id);
+        //    if (existingCaseSource == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    existingCaseSource.Name = caseSource.Name;
+        //    //existingCaseSource.Description = CaseSource.Name;
+        //    _context.SaveChanges();
+        //    return Ok(existingCaseSource);
+        //}
+
         [HttpPut]
-        public IActionResult Put(int id, CaseSource caseSource)
+        public IActionResult Put([FromBody] CaseSource caseSource)
         {
-            var existingCaseSource = _context.CaseSource.Find(id);
-            if (existingCaseSource == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest();
             }
-            existingCaseSource.Name = caseSource.Name;
-            //existingCaseSource.Description = CaseSource.Name;
+            _context.Entry(caseSource).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.SaveChanges();
-            return Ok(existingCaseSource);
+            return CreatedAtRoute(new { id = caseSource.ID }, caseSource);
         }
+
+
+
         [HttpDelete]
         public IActionResult Delete(int id)
         {

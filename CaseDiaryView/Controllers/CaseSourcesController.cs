@@ -1,7 +1,8 @@
 ﻿using CaseDiaryView.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
-using System.Text.Json;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace CaseDiaryView.Controllers
 {
@@ -17,17 +18,15 @@ namespace CaseDiaryView.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<CaseSource> caseSource = new List<CaseSource>();
-            using (var client = new HttpClient())
+            try
             {
-                var res = await client.GetAsync(_baseApiUrl);
-                if (res.IsSuccessStatusCode)
-                {
-                    caseSource = res.Content.ReadAsAsync<List<CaseSource>>().Result;
-                    return View(caseSource);
-                }
+                var caseSources = await _httpClient.GetFromJsonAsync<List<CaseSource>>(_baseApiUrl);
+                return View(caseSources ?? new List<CaseSource>());
             }
-            return View(Enumerable.Empty<CaseSource>());
+            catch
+            {
+                return View(Enumerable.Empty<CaseSource>());
+            }
         }
 
         [HttpGet]
@@ -35,27 +34,21 @@ namespace CaseDiaryView.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CaseSource caseSource)
         {
             if (!ModelState.IsValid)
-            {
                 return View(caseSource);
-            }
 
             try
             {
                 var response = await _httpClient.PostAsJsonAsync(_baseApiUrl, caseSource);
-
                 if (response.IsSuccessStatusCode)
-                {
                     return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "Failed to create a new consultation.";
-                }
+
+                ViewBag.ErrorMessage = "Failed to create case source.";
             }
             catch (Exception ex)
             {
@@ -66,21 +59,16 @@ namespace CaseDiaryView.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int ID)
+        public async Task<IActionResult> Edit(int id)
         {
             try
             {
-                var res = await _httpClient.GetAsync($"{_baseApiUrl}/{ID}");
-
-                if (!res.IsSuccessStatusCode)
+                var caseSource = await _httpClient.GetFromJsonAsync<CaseSource>($"{_baseApiUrl}/{id}");
+                if (caseSource == null)
                 {
-                    ViewBag.ErrorMessage = "Failed to fetch the case source details.";
+                    ViewBag.ErrorMessage = "Case source not found.";
                     return View();
                 }
-
-                var content = await res.Content.ReadAsStringAsync();
-                var caseSource = JsonSerializer.Deserialize<CaseSource>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
                 return View(caseSource);
             }
             catch (Exception ex)
@@ -92,21 +80,16 @@ namespace CaseDiaryView.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CaseSource caseSource)
+        public async Task<IActionResult> Edit(CaseSource caseSource)
         {
             if (!ModelState.IsValid)
-            {
                 return View(caseSource);
-            }
 
             try
             {
-                var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/{id}", caseSource);
-
+                var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}", caseSource);
                 if (response.IsSuccessStatusCode)
-                {
                     return RedirectToAction(nameof(Index));
-                }
 
                 ViewBag.ErrorMessage = "Failed to update the case source.";
             }
@@ -117,6 +100,5 @@ namespace CaseDiaryView.Controllers
 
             return View(caseSource);
         }
-
     }
 }
